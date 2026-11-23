@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.superpowers/
+data/
+*.log
+.env
+.env.*
+*.env
+*.token
+*.token.registry.json

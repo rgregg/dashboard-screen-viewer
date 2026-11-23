@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copy to ~/Library/LaunchAgents/com.dashboard.viewer.plist, edit the paths/values, then:
+     launchctl load ~/Library/LaunchAgents/com.dashboard.viewer.plist -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.dashboard.viewer</string>
+  <key>WorkingDirectory</key><string>/Users/REPLACE_ME/dashboard-screen-viewer</string>
+  <key>ProgramArguments</key>
+  <array><string>/usr/local/bin/npx</string><string>tsx</string><string>src/main.ts</string></array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>GATEWAY_URL</key><string>https://REPLACE_WITH_GATEWAY_HOSTNAME</string>
+    <key>DEVICE_TOKEN_FILE</key><string>/Users/REPLACE_ME/dashboard-data/display.token</string>
+    <key>ROTATION_SECONDS</key><string>20</string>
+    <key>POLL_SECONDS</key><string>60</string>
+    <key>DATA_DIR</key><string>/Users/REPLACE_ME/dashboard-data</string>
+    <key>PATH</key><string>/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+</dict>
+</plist>

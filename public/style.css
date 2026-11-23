@@ -1,0 +1,8 @@
+html, body { margin: 0; height: 100%; background: #000; overflow: hidden; cursor: none; }
+.layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 1s ease-in-out; }
+.layer.visible { opacity: 1; }
+#panel { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #fff; font: 4vmin system-ui, sans-serif; text-align: center; gap: 2vmin; }
+#banner { position: absolute; top: 0; left: 0; right: 0; padding: 1.2vmin 2vmin; background: #b3261e; color: #fff;
+  font: 3vmin system-ui, sans-serif; text-align: center; z-index: 10; }
+[hidden] { display: none !important; }

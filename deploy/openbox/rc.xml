@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Kiosk Openbox config: the empty keyboard and mouse sections remove every default
+     binding (including Alt+Tab, Alt+F4 and the desktop menus), so nothing can be launched or closed. -->
+<openbox_config xmlns="http://openbox.org/3.4/rc">
+  <focus>
+    <focusNew>yes</focusNew>
+    <followMouse>no</followMouse>
+  </focus>
+  <desktops>
+    <number>1</number>
+    <popupTime>0</popupTime>
+  </desktops>
+  <keyboard>
+  </keyboard>
+  <mouse>
+    <screenEdgeWarpTime>0</screenEdgeWarpTime>
+  </mouse>
+  <menu>
+    <file>menu.xml</file>
+  </menu>
+  <applications>
+    <application class="*">
+      <decor>no</decor>
+      <maximized>yes</maximized>
+    </application>
+  </applications>
+</openbox_config>

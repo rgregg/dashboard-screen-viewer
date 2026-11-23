@@ -1,0 +1,22 @@
+# Copy to /etc/systemd/system/ and edit the paths and User. Create /etc/dashboard-viewer.env
+# (chmod 600) containing GATEWAY_URL=https://YOUR-GATEWAY and DEVICE_TOKEN_FILE=/home/pi/dashboard-data/display.token,
+# and install that token readable only by the service user. Then:
+#   sudo systemctl enable --now dashboard.service
+[Unit]
+Description=Dashboard Screen Viewer
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/dashboard-screen-viewer
+EnvironmentFile=/etc/dashboard-viewer.env
+Environment=ROTATION_SECONDS=20
+Environment=POLL_SECONDS=60
+Environment=DATA_DIR=/home/pi/dashboard-data
+ExecStart=/usr/bin/npx tsx src/main.ts
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

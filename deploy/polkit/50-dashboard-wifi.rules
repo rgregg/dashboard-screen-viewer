@@ -1,0 +1,13 @@
+// Lets the kiosk account choose and save Wi-Fi networks from the on-screen setup window,
+// without a password. Nothing else is granted: no hostname, DNS, sharing or other settings.
+polkit.addRule(function (action, subject) {
+  var allowed = [
+    "org.freedesktop.NetworkManager.network-control",
+    "org.freedesktop.NetworkManager.settings.modify.system",
+    "org.freedesktop.NetworkManager.wifi.scan",
+    "org.freedesktop.NetworkManager.enable-disable-wifi"
+  ];
+  if (subject.user === "dashboard" && subject.local && subject.active && allowed.indexOf(action.id) >= 0) {
+    return polkit.Result.YES;
+  }
+});

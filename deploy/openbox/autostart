@@ -1,0 +1,1 @@
+systemd-cat -t dashboard-kiosk /opt/dashboard-screen-viewer/scripts/nuc-kiosk.sh &
