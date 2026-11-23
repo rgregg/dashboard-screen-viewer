@@ -47,7 +47,8 @@ npx tsx scripts/create-device.ts --device-id=screenshot-publisher --token-file=$
 cp ~/secure/office-display.token.registry.json ~/secure/displays.json
 cp ~/secure/screenshot-publisher.token.registry.json ~/secure/publishers.json
 
-# 2. Gateway image (then make the package public in its GitHub settings)
+# 2. Gateway image: publish a GitHub release (see "Releases"), or build and push it yourself,
+#    then make the package public in its GitHub settings
 docker build -f deploy/gateway.Dockerfile -t ghcr.io/OWNER/dashboard-screen-viewer-gateway:TAG .
 docker push ghcr.io/OWNER/dashboard-screen-viewer-gateway:TAG
 
@@ -112,6 +113,8 @@ cp ~/secure/screenshot-publisher.token.registry.json ~/secure/publishers.json
 With several, merge them into a single JSON object, for example `{"office-display": "…", "lobby-display": "…"}`. Copy each token file only to the machine that uses it.
 
 ### 2. Build and publish the gateway image
+
+Publishing a GitHub release builds and pushes the image for you (see [Releases](#releases)). To build it yourself:
 
 ```bash
 docker build -f deploy/gateway.Dockerfile -t ghcr.io/OWNER/dashboard-screen-viewer-gateway:TAG .
@@ -289,6 +292,23 @@ GATEWAY_URL=https://YOUR-GATEWAY DEVICE_TOKEN_FILE=/secure/display.token npm sta
 ```
 
 `scripts/kiosk.sh [port]` opens Chromium (Linux) or Chrome (macOS) full screen on that page. For autostart, adapt `deploy/dashboard.service` (systemd) or `deploy/macos-launchagent.plist` (macOS), keeping the token and settings readable only by the service account.
+
+## Releases
+
+GitHub Actions run two workflows:
+
+- **CI** (`.github/workflows/ci.yml`) runs on every push to `main` and every pull request. It builds the TypeScript, runs the tests, checks the shell scripts with ShellCheck, compile-checks the Python scripts, builds and lints the Bicep template, and test-builds the gateway image.
+- **Release** (`.github/workflows/release.yml`) runs when a GitHub release is published. It runs CI first, then pushes the gateway image to `ghcr.io/OWNER/dashboard-screen-viewer-gateway`, tagged with the release version (`X.Y.Z`), `X.Y`, the commit's short SHA, and `latest` (`latest` only if the release isn't a prerelease).
+
+To cut a release, publish one with a semantic version tag:
+
+```bash
+gh release create v1.2.3 --generate-notes
+```
+
+Then roll the new image out with `GATEWAY_IMAGE=ghcr.io/OWNER/dashboard-screen-viewer-gateway:1.2.3 scripts/deploy-gateway.sh`. Pin a version rather than `latest`, so a redeploy doesn't change the image unexpectedly.
+
+The workflow pushes with the repository's built-in `GITHUB_TOKEN`. If the image package was first pushed from somewhere else, it isn't connected to the repository yet: in the package's **Package settings**, under **Manage Actions access**, add this repository with the **Write** role. A package created by the workflow is connected automatically, but starts out private, so make it public once so Container Apps can pull it.
 
 ## Development
 

@@ -6,6 +6,7 @@ if [[ "$(id -u)" != 0 ]]; then
   echo "Run with sudo on the display appliance." >&2
   exit 1
 fi
+# shellcheck source=/dev/null
 . /etc/os-release
 if [[ "$ID" != debian || "$VERSION_ID" != 13 ]]; then
   echo "This installer targets Debian 13." >&2
